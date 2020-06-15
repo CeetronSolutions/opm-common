@@ -26,4 +26,9 @@ cmake3 -DPYTHON_EXECUTABLE=/usr/bin/python3 -DBOOST_INCLUDEDIR=/usr/include/boos
 # are generated in the Python step
 make -j2
 ./setup-package.sh
-
+cmake3 -DPYTHON_EXECUTABLE=/usr/local/bin/python3.7 -DBOOST_INCLUDEDIR=/usr/include/boost169 -DBOOST_LIBRARYDIR=/usr/lib64/boost169 \
+-DOPM_ENABLE_PYTHON=ON -DOPM_ENABLE_DYNAMIC_BOOST=OFF -DOPM_ENABLE_DYNAMIC_PYTHON_LINKING=OFF ..
+./setup-package.sh
+cmake3 -DPYTHON_EXECUTABLE=/usr/local/bin/python3.8 -DBOOST_INCLUDEDIR=/usr/include/boost169 -DBOOST_LIBRARYDIR=/usr/lib64/boost169 \
+-DOPM_ENABLE_PYTHON=ON -DOPM_ENABLE_DYNAMIC_BOOST=OFF -DOPM_ENABLE_DYNAMIC_PYTHON_LINKING=OFF ..
+./setup-package.sh
