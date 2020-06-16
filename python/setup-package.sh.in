@@ -11,7 +11,6 @@
 cp -r @PROJECT_SOURCE_DIR@/python @PROJECT_BINARY_DIR@
 cd @PROJECT_BINARY_DIR@/python
 rm -rf opm/libopmcommon_python*
-rm -rf dist
 rm -rf wheelhouse
 
 export CC=@CMAKE_CXX_COMPILER@
