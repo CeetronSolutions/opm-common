@@ -21,7 +21,7 @@
 
 #define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
 
-#if defined(_WIN32) || defined(_WIN64)
+#if (defined(_WIN32) || defined(_WIN64)) && _MSC_VER >= 1914
 #include <filesystem>
 #elif __cplusplus < 201703L || \
     (defined(__GNUC__) && __GNUC__ < 8 && !defined(__clang__))
@@ -35,7 +35,7 @@
 
 namespace Opm
 {
-#if defined(_WIN32) || defined(_WIN64)
+#if (defined(_WIN32) || defined(_WIN64)) && _MSC_VER >= 1914
     namespace filesystem = std::filesystem;
 #elif __cplusplus < 201703L || \
     (defined(__GNUC__) && __GNUC__ < 8 && !defined(__clang__))
