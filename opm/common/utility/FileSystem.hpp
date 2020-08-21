@@ -19,14 +19,11 @@
 #ifndef OPM_FILESYSTEM_HPP
 #define OPM_FILESYSTEM_HPP
 
-#define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
-
-#if (defined(_WIN32) || defined(_WIN64)) && _MSC_VER >= 1914
-#include <filesystem>
-#elif __cplusplus < 201703L || \
-    (defined(__GNUC__) && __GNUC__ < 8 && !defined(__clang__))
+#if (__cplusplus < 201703L && !(defined(_WIN32) || defined(_WIN64)) && _MSC_VER >= 1914)                              \
+    || (defined(__GNUC__) && __GNUC__ < 8 && !defined(__clang__))
 #include <experimental/filesystem>
 #else
+#define STD_FILESYSTEM_SUPPORTED
 #include <filesystem>
 #endif
 
@@ -35,13 +32,10 @@
 
 namespace Opm
 {
-#if (defined(_WIN32) || defined(_WIN64)) && _MSC_VER >= 1914
+#ifdef STD_FILESYSTEM_SUPPORTED
     namespace filesystem = std::filesystem;
-#elif __cplusplus < 201703L || \
-    (defined(__GNUC__) && __GNUC__ < 8 && !defined(__clang__))
-    namespace filesystem = std::experimental::filesystem;
 #else
-    namespace filesystem = std::filesystem;
+    namespace filesystem = std::experimental::filesystem;
 #endif
 
     // A poor man's filesystem::unique_path
