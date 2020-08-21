@@ -19,6 +19,10 @@
 #	                      files can of course include other files than these;
 #	                      you should only add to this list if the *user* of
 #	                      the library needs it.
+#
+# CROSS_COMPILE_FILES   List of header files providing substitutes for 
+#                       functions exclusively available on Linux build
+#                       systems.
 
 list (APPEND MAIN_SOURCE_FILES
       src/opm/common/data/SimulationDataContainer.cpp
@@ -828,4 +832,10 @@ if(ENABLE_ECL_INPUT OR ENABLE_ECL_OUTPUT)
   list(APPEND TEST_SOURCE_FILES
       tests/test_SummaryNode.cpp
 )
+endif()
+
+if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+  list(APPEND MAIN_SOURCE_FILES
+      cross-platform/windows/Substitutes.cpp
+  )
 endif()
