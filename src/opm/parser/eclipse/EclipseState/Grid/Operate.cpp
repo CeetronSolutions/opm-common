@@ -19,6 +19,10 @@
 #include <map>
 #include <string>
 
+#ifdef _WIN32
+#include <algorithm>
+#endif
+
 #include "Operate.hpp"
 
 namespace Opm {

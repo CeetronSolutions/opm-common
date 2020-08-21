@@ -42,6 +42,10 @@
 #include <map>
 #include <cmath>
 
+#if _WIN32
+#include <algorithm>
+#endif
+
 using namespace std;
 
 /*
