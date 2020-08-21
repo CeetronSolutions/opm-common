@@ -12,10 +12,17 @@ set (opm-common_DEPS
 	"C99"
 )
 
-list(APPEND opm-common_DEPS
-      # various runtime library enhancements
-      "Boost 1.44.0 COMPONENTS system unit_test_framework REQUIRED"
-      "OpenMP QUIET"
-)
-
+if(BUILD_TEST_FRAMEWORK)
+	list(APPEND opm-common_DEPS
+				# various runtime library enhancements
+				"Boost 1.44.0 COMPONENTS system unit_test_framework REQUIRED"
+				"OpenMP QUIET"
+	)
+else()
+	list(APPEND opm-common_DEPS
+	# various runtime library enhancements
+	"Boost 1.44.0 COMPONENTS system REQUIRED"
+	"OpenMP QUIET"
+	)
+endif()
 find_package_deps(opm-common)
