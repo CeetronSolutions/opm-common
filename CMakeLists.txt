@@ -5,6 +5,7 @@ option(SIBLING_SEARCH "Search for other modules in sibling directories?" ON)
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/Modules)
 set(OPM_MACROS_ROOT ${PROJECT_SOURCE_DIR})
 
+option(BUILD_TEST_FRAMEWORK "Create test framework?" ON)
 option(ENABLE_ECL_INPUT "Enable eclipse input support?" ON)
 option(ENABLE_ECL_OUTPUT "Enable eclipse output support?" ON)
 option(ENABLE_MOCKSIM "Build the mock simulator for io testing" ON)
