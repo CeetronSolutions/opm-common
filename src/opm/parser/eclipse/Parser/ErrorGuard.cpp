@@ -19,6 +19,7 @@
 
 #include <iostream>
 #include <iomanip>
+#include <algorithm>
 
 #include <opm/parser/eclipse/Parser/ErrorGuard.hpp>
 
