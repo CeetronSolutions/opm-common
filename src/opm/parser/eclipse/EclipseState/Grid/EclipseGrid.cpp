@@ -1359,14 +1359,15 @@ std::vector<double> EclipseGrid::createDVector(const std::array<int,3>& dims, st
     std::vector<double> EclipseGrid::activeVolume() const {
         std::vector<double> active_volume( this->m_nactive );
 
+        // Compilers other than gcc do only accept signed integral types, no size_t.
         #pragma omp parallel for schedule(static)
-        for (std::size_t active_index = 0; active_index < this->m_active_to_global.size(); active_index++) {
-            std::array<double,8> X;
-            std::array<double,8> Y;
-            std::array<double,8> Z;
-            auto global_index = this->m_active_to_global[active_index];
-            this->getCellCorners(global_index, X, Y, Z );
-            active_volume[active_index] = calculateCellVol(X, Y, Z);
+        for (int active_index = 0; active_index < this->m_active_to_global.size(); active_index++) {
+            std::array<double, 8> X;
+            std::array<double, 8> Y;
+            std::array<double, 8> Z;
+            auto global_index = this->m_active_to_global[static_cast<size_t>(active_index)];
+            this->getCellCorners(global_index, X, Y, Z);
+            active_volume[static_cast<size_t>(active_index)] = calculateCellVol(X, Y, Z);
         }
 
         return active_volume;
