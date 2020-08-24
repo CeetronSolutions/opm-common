@@ -835,7 +835,7 @@ if(ENABLE_ECL_INPUT OR ENABLE_ECL_OUTPUT)
 endif()
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-  list(APPEND MAIN_SOURCE_FILES
-      cross-platform/windows/Substitutes.cpp
+  list( APPEND PUBLIC_HEADER_FILES
+      cross-platform/windows/Substitutes.hpp
   )
 endif()
