@@ -548,9 +548,13 @@ void scan_item( DeckItem& deck_item, const ParserItem& parser_item, RawRecord& r
     // We can safely make a std::string_view of one_star because it
     // has static storage
     static const char* one_star = "1*";
-    std::string_view rep = !st.hasValue()
-                    ? std::string_view{ one_star }
-                    : std::string_view{ token.begin() + value_start, size };
+    std::string_view rep = !st.hasValue() 
+                    ? std::string_view {one_star} 
+#if __cplusplus >= 202002L
+                    : std::string_view { token.begin() + value_start, size };
+#else
+                    : std::string_view { std::string(token.begin() + value_start, token.end()) };
+#endif
     record.prepend( st.count() - 1, rep );
 
     return;

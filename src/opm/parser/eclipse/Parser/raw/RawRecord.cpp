@@ -46,13 +46,22 @@ std::deque< std::string_view > splitSingleRecordString( const std::string_view& 
     {
         if( *current == RawConsts::quote ) {
             auto quote_end = std::find( current + 1, record.end(), RawConsts::quote ) + 1;
+            
             std::size_t size = std::distance(current, quote_end);
-            dst.push_back( { current, size} );
+#if __cplusplus >= 202002L
+            dst.push_back( { current, size } );
+#else
+            dst.push_back( std::string_view(std::string(current, current + size)));
+#endif
             current = quote_end;
         } else {
             auto token_end = std::find_if( current, record.end(), RawConsts::is_separator() );
             std::size_t size = std::distance(current, token_end);
+#if __cplusplus >= 202002L
             dst.push_back( { current, size } );
+#else
+            dst.push_back(std::string_view(std::string(current, current + size)));
+#endif
             current = token_end;
         }
     }
