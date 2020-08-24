@@ -29,9 +29,15 @@ set(genkw_SOURCES src/opm/json/JsonObject.cpp
 if(NOT cjson_FOUND)
   list(APPEND genkw_SOURCES external/cjson/cJSON.c)
 endif()
+
 add_executable(genkw ${genkw_SOURCES})
 
 target_link_libraries(genkw ${opm-common_LIBRARIES})
+
+# Add dependency of Shlwapi.lib for Windows platforms
+if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+  target_link_libraries(genkw "Shlwapi.lib")
+endif()
 
 # Generate keyword list
 include(src/opm/parser/eclipse/share/keywords/keyword_list.cmake)
