@@ -20,6 +20,10 @@
 #include <cstring>
 #include <tuple>
 
+#ifdef _WIN32
+#include <optional>
+#endif
+
 
 #include <opm/parser/eclipse/Parser/ParseContext.hpp>
 #include <opm/parser/eclipse/Parser/ErrorGuard.hpp>
