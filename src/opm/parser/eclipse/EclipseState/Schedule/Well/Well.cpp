@@ -30,7 +30,12 @@
 
 #include "../MSW/Compsegs.hpp"
 
+#ifdef _WIN32
+#include "cross-platform/windows/Substitutes.hpp"
+#else
 #include <fnmatch.h>
+#endif
+
 #include <cmath>
 #include <ostream>
 

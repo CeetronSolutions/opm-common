@@ -17,7 +17,12 @@
   along with OPM.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifdef _WIN32
+#include "cross-platform/windows/Substitutes.hpp"
+#else
 #include <fnmatch.h>
+#endif
+
 #include <iostream>
 #include <optional>
 #include <stdexcept>

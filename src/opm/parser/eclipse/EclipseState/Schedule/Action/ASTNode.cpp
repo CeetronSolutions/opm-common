@@ -17,7 +17,11 @@
   along with OPM.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#ifdef _WIN32
+#include "cross-platform/windows/Substitutes.hpp"
+#else
 #include <fnmatch.h>
+#endif
 
 #include <opm/parser/eclipse/EclipseState/Schedule/Action/ActionContext.hpp>
 #include <opm/parser/eclipse/EclipseState/Schedule/Action/ActionValue.hpp>
@@ -52,7 +56,8 @@ ASTNode::ASTNode() :
 {}
 
 
-ASTNode::ASTNode(TokenType type_arg):
+ASTNode::ASTNode(TokenType type_arg)
+    :
     type(type_arg)
 {}
 
@@ -63,7 +68,11 @@ ASTNode::ASTNode(double value) :
 {}
 
 
-ASTNode::ASTNode(TokenType type_arg, FuncType func_type_arg, const std::string& func_arg, const std::vector<std::string>& arg_list_arg):
+ASTNode::ASTNode(TokenType type_arg,
+                 FuncType func_type_arg,
+                 const std::string& func_arg,
+                 const std::vector<std::string>& arg_list_arg)
+    :
     type(type_arg),
     func_type(func_type_arg),
     func(func_arg),
@@ -73,8 +82,8 @@ ASTNode::ASTNode(TokenType type_arg, FuncType func_type_arg, const std::string& 
 ASTNode ASTNode::serializeObject()
 {
     ASTNode result;
-    result.type = ::number;
-    result.func_type = FuncType::field;
+    result.type = Opm::TokenType::number;
+    result.func_type = Opm::FuncType::field;
     result.func = "test1";
     result.arg_list = {"test2"};
     result.number = 1.0;

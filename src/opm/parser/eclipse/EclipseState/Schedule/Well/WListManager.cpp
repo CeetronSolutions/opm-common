@@ -16,7 +16,11 @@
   You should have received a copy of the GNU General Public License
   along with OPM.  If not, see <http://www.gnu.org/licenses/>.
 */
+#ifdef _WIN32
+#include "cross-platform/windows/Substitutes.hpp"
+#else
 #include <fnmatch.h>
+#endif
 
 #include <unordered_set>
 
