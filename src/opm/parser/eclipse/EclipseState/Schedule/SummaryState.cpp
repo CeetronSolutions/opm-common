@@ -23,6 +23,10 @@
 #include <iostream>
 #include <iomanip>
 
+#ifdef _WIN32
+#include "cross-platform/windows/Substitutes.hpp"
+#endif
+
 #include <opm/parser/eclipse/EclipseState/Schedule/UDQ/UDQSet.hpp>
 #include <opm/parser/eclipse/EclipseState/Schedule/SummaryState.hpp>
 
