@@ -23,6 +23,11 @@
 #include <vector>
 #include <string>
 
+#ifdef _MSC_VER
+#include <BaseTsd.h>
+typedef SSIZE_T ssize_t;
+#endif
+
 #include <opm/parser/eclipse/EclipseState/Schedule/Action/ASTNode.hpp>
 #include <opm/parser/eclipse/EclipseState/Schedule/Action/ActionValue.hpp>
 
