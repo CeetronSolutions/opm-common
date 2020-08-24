@@ -24,6 +24,9 @@
 #include <map>
 #include <memory>
 
+#undef min
+#undef max
+
 namespace Opm {
 
     class SimpleTable;
