@@ -2,8 +2,6 @@ name: ResInsight Windows (including geomech)
 
 on:
   push:
-env:
-  BOOST_ROOT: ${{ BOOST_ROOT_1_72_0 }}
 jobs:
   Windows-x64:
     runs-on: windows-latest
