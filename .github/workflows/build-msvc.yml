@@ -1,0 +1,27 @@
+name: ResInsight Windows (including geomech)
+
+on:
+  push:
+jobs:
+  Windows-x64:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - uses: ilammy/msvc-dev-cmd@v1
+      - name: set up boost for windows
+        run: |
+          # https://github.com/approvals/ApprovalTests.cpp/blob/master/.github/workflows/github_actions_build.yml
+          echo "::set-env name=BOOST_ROOT::$env:BOOST_ROOT_1_72_0"
+          echo "::set-env name=BOOST_INCLUDEDIR::${{ env.BOOST_ROOT }}\boost\include"
+          echo "::set-env name=BOOST_LIBRARYDIR::${{ env.BOOST_ROOT }}\lib"
+         
+      - name: Build
+        run: |
+          mkdir cmakebuild
+          cd cmakebuild
+          cmake -DENABLE_ECL_OUTPUT=OFF -DENABLE_MOCKSIM=OFF -DBUILD_TEST_FRAMEWORK=OFF .. -B . 
+          cmake --build . --target opmcommon
+          
+          
+        
