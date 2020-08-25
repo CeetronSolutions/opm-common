@@ -1,4 +1,4 @@
-name: ResInsight Windows (including geomech)
+name: opmcommon for Windows
 
 on:
   push:
