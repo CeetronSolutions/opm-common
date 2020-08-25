@@ -1,0 +1,20 @@
+name: ResInsight Windows (including geomech)
+
+on:
+  push:
+jobs:
+  Windows-x64:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - uses: ilammy/msvc-dev-cmd@v1
+      - name: Build
+        run: |
+          mkdir cmakebuild
+          cd cmakebuild
+          cmake -DENABLE_ECL_INPUT=OFF -DENABLE_MOCKSIM=OFF .. -B . 
+          cmake --build .
+          
+          
+        
