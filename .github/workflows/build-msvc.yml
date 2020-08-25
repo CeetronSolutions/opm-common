@@ -21,7 +21,7 @@ jobs:
           mkdir cmakebuild
           cd cmakebuild
           cmake -DENABLE_ECL_OUTPUT=OFF -DENABLE_MOCKSIM=OFF -DBUILD_TEST_FRAMEWORK=OFF .. -B . 
-          cmake --build .
+          cmake --build . --target opm-common
           
           
         
