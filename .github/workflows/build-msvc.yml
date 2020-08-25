@@ -20,7 +20,7 @@ jobs:
         run: |
           mkdir cmakebuild
           cd cmakebuild
-          cmake -DENABLE_ECL_INPUT=OFF -DENABLE_MOCKSIM=OFF -DBUILD_TEST_FRAMEWORK=OFF .. -B . 
+          cmake -DENABLE_ECL_OUPUT=OFF -DENABLE_MOCKSIM=OFF -DBUILD_TEST_FRAMEWORK=OFF .. -B . 
           cmake --build .
           
           
