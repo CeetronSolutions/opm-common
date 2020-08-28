@@ -19,8 +19,12 @@
 #ifndef OPM_FILESYSTEM_HPP
 #define OPM_FILESYSTEM_HPP
 
-#if __cplusplus < 201703L || \
-    (defined(__GNUC__) && __GNUC__ < 8)
+#define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
+
+#if defined(_WIN32) || defined(_WIN64)
+#include <filesystem>
+#elif __cplusplus < 201703L || \
+    (defined(__GNUC__) && __GNUC__ < 8 && !defined(__clang__))
 #include <experimental/filesystem>
 #else
 #include <filesystem>
@@ -31,8 +35,10 @@
 
 namespace Opm
 {
-#if __cplusplus < 201703L || \
-    (defined(__GNUC__) && __GNUC__ < 8)
+#if defined(_WIN32) || defined(_WIN64)
+    namespace filesystem = std::filesystem;
+#elif __cplusplus < 201703L || \
+    (defined(__GNUC__) && __GNUC__ < 8 && !defined(__clang__))
     namespace filesystem = std::experimental::filesystem;
 #else
     namespace filesystem = std::filesystem;
