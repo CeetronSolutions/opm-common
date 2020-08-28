@@ -25,6 +25,7 @@
 #include <cassert>
 
 #include <string>
+#include <stdexcept>
 
 namespace Opm {
 namespace {
