@@ -28,7 +28,12 @@
 #include <opm/parser/eclipse/EclipseState/Schedule/Well/WellInjectionProperties.hpp>
 #include <opm/parser/eclipse/EclipseState/Schedule/Well/WellProductionProperties.hpp>
 
+#ifdef _WIN32
+#include "cross-platform/windows/Substitutes.hpp"
+#else
 #include <fnmatch.h>
+#endif
+
 #include <cmath>
 #include <ostream>
 
