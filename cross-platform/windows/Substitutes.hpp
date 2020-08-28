@@ -13,11 +13,7 @@
 #undef ERROR
 #include <iostream>
 #include <stddef.h>
-
-#if defined(_MSC_VER)
-#include <BaseTsd.h>
-typedef SSIZE_T ssize_t;
-#endif
+#include <time.h>
 
 int fnmatch(const char* pattern, const char* string, int flags)
 {
@@ -32,6 +28,18 @@ int fnmatch(const char* pattern, const char* string, int flags)
     mbstowcs_s(&outsize, pszSpec, pattern, strlen(pattern) + 1);
 
     return (!PathMatchSpecW(pszFile, pszSpec));
+}
+
+struct tm* gmtime_r(const time_t* timer, struct tm* buf)
+{
+    if (gmtime_s(buf, timer) == 0) 
+    {
+        return nullptr;
+    } 
+    else 
+    {
+        return buf;
+    }
 }
 
 #endif
