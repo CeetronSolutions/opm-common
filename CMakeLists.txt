@@ -153,11 +153,6 @@ if (OPM_ENABLE_PYTHON)
   endif()
 endif()
 
-# Add dependency of Shlwapi.lib for Windows platforms
-if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-  target_link_libraries(opmcommon Shlwapi)
-endif()
-
 
 # all setup common to the OPM library modules is done here
 include (OpmLibMain)
