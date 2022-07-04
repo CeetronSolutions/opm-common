@@ -36,7 +36,7 @@ namespace Opm {
 
     enum ParserKeywordActionEnum {
         INTERNALIZE = 0,
-        IGNORE = 1,
+        msj_IGNORE = 1,
         IGNORE_WARNING = 2,
         THROW_EXCEPTION = 3
     };

@@ -74,7 +74,7 @@ namespace Opm {
         case INTERNALIZE:
             return "INTERNALIZE";
             break;
-        case IGNORE:
+        case msj_IGNORE:
             return "IGNORE";
             break;
         case THROW_EXCEPTION:
@@ -92,7 +92,7 @@ namespace Opm {
         if (stringValue == "INTERNALIZE")
             return INTERNALIZE;
         else if (stringValue == "IGNORE")
-            return IGNORE;
+            return msj_IGNORE;
         else if (stringValue == "THROW_EXCEPTION")
             return THROW_EXCEPTION;
         else if (stringValue == "IGNORE_WARNING")
