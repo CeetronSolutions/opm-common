@@ -18,6 +18,7 @@
 
 #include <algorithm>
 #include <cassert>
+#define _USE_MATH_DEFINES
 #include <cmath>
 #include <opm/common/utility/numeric/calculateCellVol.hpp>
 #include <opm/common/ErrorMacros.hpp>

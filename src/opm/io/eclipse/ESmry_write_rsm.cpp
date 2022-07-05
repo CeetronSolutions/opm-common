@@ -172,7 +172,7 @@ namespace Opm::EclIO {
 void ESmry::write_block(std::ostream& os, bool write_dates, const std::vector<std::string>& time_column, const std::vector<SummaryNode>& vectors) const {
     write_line(os, block_separator_line, '1');
     write_line(os, divider_line);
-    write_line(os, block_header_line(inputFileName.stem()));
+    write_line(os, block_header_line(inputFileName.stem().string()));
     write_line(os, divider_line);
 
     std::vector<std::pair<std::vector<float>, int>> data;
@@ -270,7 +270,7 @@ void ESmry::write_rsm_file(std::optional<std::filesystem::path> filename) const 
     std::ofstream rsm_file { summary_file_name } ;
 
     if (!rsm_file.is_open()) {
-        OPM_THROW(std::runtime_error, "Could not open file " + std::string(summary_file_name));
+        OPM_THROW(std::runtime_error, "Could not open file " + std::string(summary_file_name.string()));
     }
 
     write_rsm(rsm_file);

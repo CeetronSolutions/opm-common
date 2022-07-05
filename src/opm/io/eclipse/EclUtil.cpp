@@ -20,6 +20,8 @@
 
 #include <opm/common/ErrorMacros.hpp>
 
+#include <cross-platform/PortableEndian.hpp>
+
 #include <algorithm>
 #include <array>
 #include <stdexcept>

@@ -118,7 +118,7 @@ std::vector<EclFile::EclEntry> ERst::listOfRstArrays(int reportStepNumber, const
     int start_ind_lgr;
     std::string last_array_name;
 
-    if ((lgr_name == "") or (lgr_name_upper == "GLOBAL")){
+    if (lgr_name.empty()  || lgr_name_upper == "GLOBAL"){
         auto rng = this->arrIndexRange.at(reportStepNumber);
         start_ind_lgr = std::get<0>(rng);
 

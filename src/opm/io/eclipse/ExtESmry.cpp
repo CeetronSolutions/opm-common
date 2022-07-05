@@ -290,7 +290,7 @@ bool ExtESmry::open_esmry(const std::filesystem::path& inputFileName, ExtSmryHea
         return false;
     }
 
-    if ((arrName != "START   ") or (arrType != Opm::EclIO::INTE))
+    if (arrName != "START   " || arrType != Opm::EclIO::INTE)
         OPM_THROW(std::invalid_argument, "reading start, invalid esmry file " + inputFileName.string() );
 
     std::vector<int> start_vect;
@@ -375,7 +375,7 @@ bool ExtESmry::open_esmry(const std::filesystem::path& inputFileName, ExtSmryHea
         return false;
     }
 
-    if ((arrName != "RSTEP   ") or (arrType != Opm::EclIO::INTE))
+    if (arrName != "RSTEP   " || arrType != Opm::EclIO::INTE)
         OPM_THROW(std::invalid_argument, "Reading RSTEP, invalid esmry file " + inputFileName.string() );
 
     std::vector<int> rstep;
@@ -394,7 +394,7 @@ bool ExtESmry::open_esmry(const std::filesystem::path& inputFileName, ExtSmryHea
         return false;
     }
 
-    if ((arrName != "TSTEP   ") or (arrType != Opm::EclIO::INTE))
+    if (arrName != "TSTEP   " || arrType != Opm::EclIO::INTE)
         OPM_THROW(std::invalid_argument, "reading TSTEP, invalid esmry file " + inputFileName.string() );
 
     std::vector<int> tstep;

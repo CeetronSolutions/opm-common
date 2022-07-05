@@ -1651,7 +1651,7 @@ DensityTable::DensityTable(const GravityTable& gravity)
 
     std::transform(gravity.begin(), gravity.end(),
                    std::back_inserter(this->table_),
-                   [](const GRAVITYRecord& record)
+                   [&default_water_density, &default_air_density](const GRAVITYRecord& record)
     {
         return DENSITYRecord {
             (141.5 / (record.oil_api + 131.5)) * default_water_density,

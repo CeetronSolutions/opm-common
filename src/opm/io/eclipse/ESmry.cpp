@@ -1026,7 +1026,7 @@ bool ESmry::make_esmry_file()
 
     smryDataFile = path / rootName += ".ESMRY";
 
-    if (Opm::EclIO::fileExists(smryDataFile))
+    if (Opm::EclIO::fileExists(smryDataFile.string()))
     {
         return false;
 
@@ -1055,7 +1055,7 @@ bool ESmry::make_esmry_file()
             for (auto key : keyword)
                 units.push_back(kwunits.at(key));
 
-            Opm::EclIO::EclOutput outFile(smryDataFile, false, std::ios::out);
+            Opm::EclIO::EclOutput outFile(smryDataFile.string(), false, std::ios::out);
 
             outFile.write<int>("START", start_date_vect);
 
