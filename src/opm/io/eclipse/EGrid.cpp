@@ -340,9 +340,9 @@ void EGrid::getCellCorners(const std::array<int, 3>& ijk,
 
         if (m_radial) {
             xt = coord_array[pind[n]] * cos(coord_array[pind[n] + 1] / 180.0 * M_PI);
-            yt = coord_array[pind[n]] * sin(coord_array[pind[n] + 1] / 180.0 * M_PI);
+            yt = -coord_array[pind[n]] * sin(coord_array[pind[n] + 1] / 180.0 * M_PI);
             xb = coord_array[pind[n]+3] * cos(coord_array[pind[n] + 4] / 180.0 * M_PI);
-            yb = coord_array[pind[n]+3] * sin(coord_array[pind[n] + 4] / 180.0 * M_PI);
+            yb = -coord_array[pind[n]+3] * sin(coord_array[pind[n] + 4] / 180.0 * M_PI);
         } else {
             xt = coord_array[pind[n]];
             yt = coord_array[pind[n] + 1];
@@ -358,6 +358,47 @@ void EGrid::getCellCorners(const std::array<int, 3>& ijk,
     }
 }
 
+void EGrid::getRadialCellCorners(const std::array<int, 3>& ijk, std::array<double, 8>& X, std::array<double, 8>& Y, std::array<double, 8>& Z)
+{
+    if (coord_array.empty())
+        load_grid_data();
+
+    std::vector<int> zind;
+    std::vector<int> pind;
+
+    // calculate indices for grid pillars in COORD arrray
+    pind.push_back(ijk[1] * (nijk[0] + 1) * 6 + ijk[0] * 6);
+    pind.push_back(pind[0] + 6);
+    pind.push_back(pind[0] + (nijk[0] + 1) * 6);
+    pind.push_back(pind[2] + 6);
+
+    // get depths from zcorn array in ZCORN array
+    zind.push_back(ijk[2] * nijk[0] * nijk[1] * 8 + ijk[1] * nijk[0] * 4 + ijk[0] * 2);
+    zind.push_back(zind[0] + 1);
+    zind.push_back(zind[0] + nijk[0] * 2);
+    zind.push_back(zind[2] + 1);
+
+    for (int n = 0; n < 4; n++)
+        zind.push_back(zind[n] + nijk[0] * nijk[1] * 4);
+
+    for (int n = 0; n < 8; n++)
+        Z[n] = zcorn_array[zind[n]];
+
+    for (int n = 0; n < 4; n++) {
+        double xt = coord_array[pind[n]];
+        double yt = coord_array[pind[n] + 1];
+        double zt = coord_array[pind[n] + 2];
+        double xb = coord_array[pind[n] + 3];
+        double yb = coord_array[pind[n] + 4];
+        double zb = coord_array[pind[n] + 5];
+
+        X[n] = xt + (xb - xt) / (zt - zb) * (zt - Z[n]);
+        X[n + 4] = xt + (xb - xt) / (zt - zb) * (zt - Z[n + 4]);
+
+        Y[n] = yt + (yb - yt) / (zt - zb) * (zt - Z[n]);
+        Y[n + 4] = yt + (yb - yt) / (zt - zb) * (zt - Z[n + 4]);
+    }
+}
 
 
 void EGrid::getCellCorners(int globindex, std::array<double,8>& X,
