@@ -179,6 +179,8 @@ Opm::EclIO::SummaryNode::Category Opm::EclIO::SummaryNode::category_from_keyword
     case 'R': return Category::Region;
     case 'S': return Category::Segment;
     case 'W': return Category::Well;
+    case 'N': return Category::Node;
+
     default:  return Category::Miscellaneous;
     }
 }
