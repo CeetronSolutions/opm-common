@@ -595,6 +595,9 @@ ESmry::ESmry(const std::string &filename, bool loadBaseRunData) :
 
 void ESmry::read_ministeps_from_disk()
 {
+    if (miniStepList.empty())
+        return;
+
     auto specInd = std::get<0>(miniStepList[0]);
     auto dataFileIndex = std::get<1>(miniStepList[0]);
     uint64_t stepFilePos;
@@ -804,6 +807,9 @@ std::vector<int> ESmry::makeKeywPosVector(int specInd) const
 
 void ESmry::loadData() const
 {
+    if (timeStepList.empty())
+        return;
+
     std::fstream fileH;
 
     auto specInd = std::get<0>(timeStepList[0]);
