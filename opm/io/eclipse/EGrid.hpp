@@ -59,6 +59,9 @@ public:
     void load_nnc_data();
     bool is_radial() const { return m_radial; }
 
+    // porosity_mode < 0 means not specified, 0 = single, 1 = dual por, 2 = dual perm
+    int porosity_mode() const { return m_porosity_mode; }
+
     const std::vector<int>& hostCellsGlobalIndex() const { return host_cells; }
     std::vector<std::array<int, 3>> hostCellsIJK();
 
@@ -84,6 +87,8 @@ private:
 
     int nactive;
     mutable bool m_nncs_loaded;
+
+    int m_porosity_mode;
 
     std::vector<int> act_index;
     std::vector<int> glob_index;

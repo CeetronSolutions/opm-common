@@ -40,7 +40,7 @@ namespace Opm { namespace EclIO {
 using NNCentry = std::tuple<int, int, int, int, int,int, float>;
 
 EGrid::EGrid(const std::string &filename, std::string grid_name) :
-    EclFile(filename), inputFileName { filename }, m_grid_name {grid_name}
+    EclFile(filename), inputFileName { filename }, m_grid_name {grid_name}, m_porosity_mode(-1)
 {
     initFileName = inputFileName.parent_path() / inputFileName.stem();
 
@@ -112,13 +112,19 @@ EGrid::EGrid(const std::string &filename, std::string grid_name) :
                 hostnum_index= n;
         }
 
-        if ((lgrname == "global") && (array_name[n] == "GRIDHEAD")) {
-            auto gridhead = get<int>(n);
-            host_nijk[0] = gridhead[1];
-            host_nijk[1] = gridhead[2];
-            host_nijk[2] = gridhead[3];
-        }
+        if ((lgrname == "global")) {
 
+            if (array_name[n] == "GRIDHEAD") {
+                const auto& gridhead = get<int>(n);
+                host_nijk[0] = gridhead[1];
+                host_nijk[1] = gridhead[2];
+                host_nijk[2] = gridhead[3];
+
+            } else if (array_name[n] == "FILEHEAD") {
+                const auto& filehead = get<int>(n);
+                m_porosity_mode = filehead[5];
+            }
+        }
     }
 
     if (actnum_array_index != -1) {

@@ -3,7 +3,6 @@
         AlignAfterOpenBracket: AlwaysBreak,
         AlignConsecutiveAssignments: false,
         AlignConsecutiveDeclarations: false,
-        AlignAfterOpenBracket: Align,
         AllowShortBlocksOnASingleLine: false,
         AllowShortFunctionsOnASingleLine: None,
         AlwaysBreakAfterReturnType: TopLevelDefinitions,
