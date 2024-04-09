@@ -3,9 +3,8 @@
 
    This file is part of the Open Porous Media project (OPM).
 
-   OPM is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by
-   the Free Software Foundation, either version 3 of the License, or
-   (at your option) any later version.
+   OPM is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as
+   published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
    OPM is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -22,100 +21,154 @@
 #include <opm/io/eclipse/EclFile.hpp>
 
 #include <array>
-#include <filesystem>
-#include <iostream>
-#include <string>
-#include <fstream>
-#include <vector>
 #include <ctime>
+#include <filesystem>
+#include <fstream>
+#include <iostream>
 #include <map>
+#include <string>
+#include <vector>
 
-namespace Opm { namespace EclIO {
-
-class EGrid : public EclFile
+namespace Opm
 {
-public:
-    explicit EGrid(const std::string& filename, std::string grid_name = "global");
+namespace EclIO
+{
 
-    int global_index(int i, int j, int k) const;
-    int active_index(int i, int j, int k) const;
+    class EGrid : public EclFile
+    {
+    public:
+        explicit EGrid(const std::string& filename, std::string grid_name = "global");
 
-    const std::array<int, 3>& dimension() const { return nijk; }
+        int global_index(int i, int j, int k) const;
+        int active_index(int i, int j, int k) const;
+        int active_frac_index(int i, int j, int k) const;
 
-    std::array<int, 3> ijk_from_active_index(int actInd) const;
-    std::array<int, 3> ijk_from_global_index(int globInd) const;
+        const std::array<int, 3>& dimension() const
+        {
+            return nijk;
+        }
 
-    void getCellCorners(int globindex, std::array<double,8>& X, std::array<double,8>& Y, std::array<double,8>& Z);
-    void getCellCorners(const std::array<int, 3>& ijk, std::array<double, 8>& X, std::array<double, 8>& Y, std::array<double, 8>& Z);
-    void getRadialCellCorners(const std::array<int, 3>& ijk, std::array<double,8>& X, std::array<double,8>& Y, std::array<double,8>& Z);
+        std::array<int, 3> ijk_from_active_index(int actInd) const;
+        std::array<int, 3> ijk_from_active_frac_index(int actFracInd) const;
+        std::array<int, 3> ijk_from_global_index(int globInd) const;
 
-    std::vector<std::array<float, 3>> getXYZ_layer(int layer, bool bottom=false);
-    std::vector<std::array<float, 3>> getXYZ_layer(int layer, const std::array<int, 4>& box, bool bottom=false);
+        void
+        getCellCorners(int globindex, std::array<double, 8>& X, std::array<double, 8>& Y, std::array<double, 8>& Z);
+        void getCellCorners(
+            const std::array<int, 3>& ijk,
+            std::array<double, 8>& X,
+            std::array<double, 8>& Y,
+            std::array<double, 8>& Z);
+        void getRadialCellCorners(
+            const std::array<int, 3>& ijk,
+            std::array<double, 8>& X,
+            std::array<double, 8>& Y,
+            std::array<double, 8>& Z);
 
-    int activeCells() const { return nactive; }
-    int totalNumberOfCells() const { return nijk[0] * nijk[1] * nijk[2]; }
+        std::vector<std::array<float, 3>> getXYZ_layer(int layer, bool bottom = false);
+        std::vector<std::array<float, 3>> getXYZ_layer(int layer, const std::array<int, 4>& box, bool bottom = false);
 
-    void load_grid_data();
-    void load_nnc_data();
-    bool is_radial() const { return m_radial; }
+        int activeCells() const
+        {
+            return nactive;
+        }
 
-    // porosity_mode < 0 means not specified, 0 = single, 1 = dual por, 2 = dual perm
-    int porosity_mode() const { return m_porosity_mode; }
+        int activeFracCells() const
+        {
+            return nactive_frac;
+        }
 
-    const std::vector<int>& hostCellsGlobalIndex() const { return host_cells; }
-    std::vector<std::array<int, 3>> hostCellsIJK();
+        int totalNumberOfCells() const
+        {
+            return nijk[0] * nijk[1] * nijk[2];
+        }
 
-    // zero based: i1, j1,k1, i2,j2,k2, transmisibility
-    using NNCentry = std::tuple<int, int, int, int, int, int, float>;
-    std::vector<NNCentry> get_nnc_ijk();
+        void load_grid_data();
+        void load_nnc_data();
+        bool is_radial() const
+        {
+            return m_radial;
+        }
 
-    const std::vector<std::string>& list_of_lgrs() const { return lgr_names; }
+        // porosity_mode < 0 means not specified, 0 = single, 1 = dual por, 2 = dual perm
+        int porosity_mode() const
+        {
+            return m_porosity_mode;
+        }
 
-    const std::vector<float>& get_mapaxes() const { return m_mapaxes; }
-    const std::string& get_mapunits() const { return m_mapunits; }
+        const std::vector<int>& hostCellsGlobalIndex() const
+        {
+            return host_cells;
+        }
+        std::vector<std::array<int, 3>> hostCellsIJK();
 
-private:
-    std::filesystem::path inputFileName, initFileName;
-    std::string m_grid_name;
-    bool m_radial;
+        // zero based: i1, j1,k1, i2,j2,k2, transmisibility
+        using NNCentry = std::tuple<int, int, int, int, int, int, float>;
+        std::vector<NNCentry> get_nnc_ijk();
 
-    std::vector<float> m_mapaxes;
-    std::string m_mapunits;
+        const std::vector<std::string>& list_of_lgrs() const
+        {
+            return lgr_names;
+        }
 
-    std::array<int, 3> nijk;
-    std::array<int, 3> host_nijk;
+        const std::vector<float>& get_mapaxes() const
+        {
+            return m_mapaxes;
+        }
+        const std::string& get_mapunits() const
+        {
+            return m_mapunits;
+        }
 
-    int nactive;
-    mutable bool m_nncs_loaded;
+    private:
+        std::filesystem::path inputFileName, initFileName;
+        std::string m_grid_name;
+        bool m_radial;
 
-    int m_porosity_mode;
+        std::vector<float> m_mapaxes;
+        std::string m_mapunits;
 
-    std::vector<int> act_index;
-    std::vector<int> glob_index;
+        std::array<int, 3> nijk;
+        std::array<int, 3> host_nijk;
 
-    std::vector<float> coord_array;
-    std::vector<float> zcorn_array;
+        int nactive;
+        int nactive_frac;
 
-    std::vector<int> nnc1_array;
-    std::vector<int> nnc2_array;
-    std::vector<float> transnnc_array;
-    std::vector<int> host_cells;
+        mutable bool m_nncs_loaded;
 
-    std::vector<std::string> lgr_names;
+        int m_porosity_mode;
 
-    int zcorn_array_index;
-    int coord_array_index;
-    int actnum_array_index;
-    int nnc1_array_index;
-    int nnc2_array_index;
+        std::vector<int> act_index;
+        std::vector<int> act_frac_index;
+        std::vector<int> glob_index;
 
-    std::vector<float> get_zcorn_from_disk(int layer, bool bottom);
+        std::vector<float> coord_array;
+        std::vector<float> zcorn_array;
 
-    void getCellCorners(const std::array<int, 3>& ijk, const std::vector<float>& zcorn_layer,
-                           std::array<double,4>& X, std::array<double,4>& Y, std::array<double,4>& Z);
+        std::vector<int> nnc1_array;
+        std::vector<int> nnc2_array;
+        std::vector<float> transnnc_array;
+        std::vector<int> host_cells;
 
-};
+        std::vector<std::string> lgr_names;
 
-}} // namespace Opm::EclIO
+        int zcorn_array_index;
+        int coord_array_index;
+        int actnum_array_index;
+        int nnc1_array_index;
+        int nnc2_array_index;
+
+        std::vector<float> get_zcorn_from_disk(int layer, bool bottom);
+
+        void getCellCorners(
+            const std::array<int, 3>& ijk,
+            const std::vector<float>& zcorn_layer,
+            std::array<double, 4>& X,
+            std::array<double, 4>& Y,
+            std::array<double, 4>& Z);
+    };
+
+} // namespace EclIO
+} // namespace Opm
 
 #endif // OPM_IO_EGRID_HPP
