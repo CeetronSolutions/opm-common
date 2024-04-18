@@ -111,6 +111,11 @@ namespace EclIO
             return lgr_names;
         }
 
+        const std::vector<std::string>& list_of_lgr_parents() const
+        {
+            return lgr_parents;
+        }
+
         const std::vector<float>& get_mapaxes() const
         {
             return m_mapaxes;
@@ -151,6 +156,7 @@ namespace EclIO
         std::vector<int> host_cells;
 
         std::vector<std::string> lgr_names;
+        std::vector<std::string> lgr_parents;
 
         int zcorn_array_index;
         int coord_array_index;

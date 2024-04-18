@@ -66,13 +66,22 @@ namespace EclIO
 
         for (size_t n = 0; n < array_name.size(); n++) {
 
-            if (array_name[n] == "ENDLGR")
+            if (array_name[n] == "ENDLGR") {
                 lgrname = "global";
+                while (lgr_names.size() > lgr_parents.size()) {
+                    lgr_parents.push_back("");
+                }
+            }
 
             if (array_name[n] == "LGR") {
                 auto lgr = this->get<std::string>(n);
                 lgrname = lgr[0];
                 lgr_names.push_back(lgr[0]);
+            }
+
+            if (array_name[n] == "LGRPARNT") {
+                auto lgr_parent = this->get<std::string>(n);
+                lgr_parents.push_back(lgr_parent[0]);
             }
 
             if (array_name[n] == "NNCHEAD") {
