@@ -137,7 +137,7 @@ namespace RestartIO
         , glift_rate_delta(unit_system.to_si(M::gas_surface_rate, doubhead[VI::doubhead::LOincrsz]))
         , glift_min_eco_grad(unit_system.to_si(M::identity, doubhead[VI::doubhead::LOminEcGrad]))
     {
-        if (iprog >= 300) {
+        if ((iprog >= 300) && (intehead.size() > VI::intehead::ISECND)) {
             microsecond = intehead[VI::intehead::ISECND];
         } else {
             microsecond = 0;
