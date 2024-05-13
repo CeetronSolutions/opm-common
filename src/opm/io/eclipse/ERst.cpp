@@ -173,7 +173,7 @@ namespace EclIO
         return count;
     }
 
-    std::pair<int, int> ERst::occurrenceCountSize(const std::string& name, int reportStepNumber) const
+    int ERst::dataSize(const std::string& name, int reportStepNumber) const
     {
         if (!hasReportStepNumber(reportStepNumber)) {
             std::string message = "Trying to count vectors of name " + name + " from non existing sequence "
@@ -181,7 +181,6 @@ namespace EclIO
             OPM_THROW(std::invalid_argument, message);
         }
 
-        int count = 0;
         int size = 0;
 
         auto range_it = arrIndexRange.find(reportStepNumber);
@@ -190,12 +189,11 @@ namespace EclIO
 
         for (int i = std::get<0>(indexRange); i < std::get<1>(indexRange); i++) {
             if (array_name[i] == name) {
-                count++;
                 size += array_size[i];
             }
         }
 
-        return {count, size};
+        return size;
     }
 
     void ERst::initUnified()

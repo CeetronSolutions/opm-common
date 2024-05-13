@@ -77,7 +77,7 @@ namespace EclIO
         template <typename T>
         const std::vector<T>& getRestartData(int index, int reportStepNumber, const std::string& lgr_name);
 
-        std::pair<int, int> occurrenceCountSize(const std::string& name, int reportStepNumber) const;
+        int dataSize(const std::string& name, int reportStepNumber) const;
         int occurrence_count(const std::string& name, int reportStepNumber) const;
         size_t numberOfReportSteps() const
         {
