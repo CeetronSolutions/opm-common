@@ -60,6 +60,8 @@ namespace EclIO
         actnum_array_index = -1;
         nnc1_array_index = -1;
         nnc2_array_index = -1;
+        nncg_array_index = -1;
+        nncl_array_index = -1;
         m_radial = false;
 
         int hostnum_index = -1;
@@ -124,6 +126,10 @@ namespace EclIO
                     nnc2_array_index = n;
                 else if (array_name[n] == "HOSTNUM")
                     hostnum_index = n;
+                else if (array_name[n] == "NNCL")
+                    nncl_array_index = n;
+                else if (array_name[n] == "NNCG")
+                    nncg_array_index = n;
             }
 
             if ((lgrname == "global")) {
@@ -276,6 +282,22 @@ namespace EclIO
                 }
 
                 transnnc_array = trans_data;
+
+                if ((nncg_array_index > -1) && (nncl_array_index > -1)) {
+
+                    nncg_array = getImpl(nncg_array_index, Opm::EclIO::INTE, inte_array, "inte");
+                    nncl_array = getImpl(nncl_array_index, Opm::EclIO::INTE, inte_array, "inte");
+
+                    auto trangl_data = init.getInitData<float>("TRANGL", m_grid_name);
+                    if (trangl_data.size() != nncg_array.size()) {
+                        std::string message = "inconsistent size of array TRANGL in init file. ";
+                        message = message + " Size of NNCG and NNCL: " + std::to_string(nncl_array.size());
+                        message = message + " Size of TRANGL: " + std::to_string(trangl_data.size());
+                        OPM_THROW(std::invalid_argument, message);
+                    }
+
+                    transgl_array = trangl_data;
+                }
             }
 
             m_nncs_loaded = true;

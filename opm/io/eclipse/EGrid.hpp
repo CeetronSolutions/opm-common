@@ -153,6 +153,9 @@ namespace EclIO
         std::vector<int> nnc1_array;
         std::vector<int> nnc2_array;
         std::vector<float> transnnc_array;
+        std::vector<int> nncg_array;
+        std::vector<int> nncl_array;
+        std::vector<float> transgl_array;
         std::vector<int> host_cells;
 
         std::vector<std::string> lgr_names;
@@ -163,6 +166,8 @@ namespace EclIO
         int actnum_array_index;
         int nnc1_array_index;
         int nnc2_array_index;
+        int nncl_array_index;
+        int nncg_array_index;
 
         std::vector<float> get_zcorn_from_disk(int layer, bool bottom);
 
