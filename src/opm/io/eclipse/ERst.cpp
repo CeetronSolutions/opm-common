@@ -176,12 +176,12 @@ namespace EclIO
     int ERst::dataSize(const std::string& name, int reportStepNumber) const
     {
         if (!hasReportStepNumber(reportStepNumber)) {
-            std::string message = "Trying to count vectors of name " + name + " from non existing sequence "
+            std::string message = "Trying to get size of vectors of name " + name + " from non existing sequence "
                 + std::to_string(reportStepNumber);
             OPM_THROW(std::invalid_argument, message);
         }
 
-        int size = 0;
+        int dataSize = 0;
 
         auto range_it = arrIndexRange.find(reportStepNumber);
 
@@ -189,11 +189,11 @@ namespace EclIO
 
         for (int i = std::get<0>(indexRange); i < std::get<1>(indexRange); i++) {
             if (array_name[i] == name) {
-                size += array_size[i];
+                dataSize += array_size[i];
             }
         }
 
-        return size;
+        return dataSize;
     }
 
     void ERst::initUnified()
