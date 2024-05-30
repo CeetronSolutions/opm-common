@@ -33,6 +33,23 @@ namespace Opm
 {
 namespace EclIO
 {
+    struct ENNCConnection {
+        int grid1_Id;
+        int grid1_CellIdx;
+        int grid2_Id;
+        int grid2_CellIdx;
+        float transValue;
+
+        ENNCConnection(int id1, int cellId1, int id2, int cellId2, float trans)
+        {
+            grid1_Id = id1;
+            grid2_Id = id2;
+            grid1_CellIdx = cellId1;
+            grid2_CellIdx = cellId2;
+            transValue = trans;
+        }
+    };
+
 
     class EGrid : public EclFile
     {
@@ -125,6 +142,9 @@ namespace EclIO
             return m_mapunits;
         }
 
+        std::vector<ENNCConnection> nnc_connections(int this_grid_id);
+
+
     private:
         std::filesystem::path inputFileName, initFileName;
         std::string m_grid_name;
@@ -156,6 +176,7 @@ namespace EclIO
         std::vector<int> nncg_array;
         std::vector<int> nncl_array;
         std::vector<float> transgl_array;
+
         std::vector<int> host_cells;
 
         std::vector<std::string> lgr_names;

@@ -304,6 +304,22 @@ namespace EclIO
         }
     }
 
+    std::vector<ENNCConnection> EGrid::nnc_connections(int this_grid_id)
+    {
+        std::vector<ENNCConnection> connections;
+
+        for (int n = 0; n < (int)nnc1_array.size(); n++) {
+            connections.emplace_back(this_grid_id, nnc1_array[n], this_grid_id, nnc2_array[n], transnnc_array[n]);
+        }
+
+        for (int n = 0; n < (int)nncg_array.size(); n++) {
+            connections.emplace_back(0, nncg_array[n], this_grid_id, nncl_array[n], transgl_array[n]);
+        }
+
+        return connections;
+    }
+
+
     int EGrid::global_index(int i, int j, int k) const
     {
         if (i < 0 || i >= nijk[0] || j < 0 || j >= nijk[1] || k < 0 || k >= nijk[2]) {
