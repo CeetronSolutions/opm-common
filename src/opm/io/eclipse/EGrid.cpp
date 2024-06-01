@@ -244,13 +244,17 @@ namespace EclIO
 
     void EGrid::load_nnc_data()
     {
+        if (!std::filesystem::exists(initFileName))
+            return;
+
+        Opm::EclIO::EInit init(initFileName.string());
+
         if ((nnc1_array_index > -1) && (nnc2_array_index > -1)) {
 
             nnc1_array = getImpl(nnc1_array_index, Opm::EclIO::INTE, inte_array, "inte");
             nnc2_array = getImpl(nnc2_array_index, Opm::EclIO::INTE, inte_array, "inte");
 
-            if ((std::filesystem::exists(initFileName)) && (nnc1_array.size() > 0)) {
-                Opm::EclIO::EInit init(initFileName.string());
+            if (nnc1_array.size() > 0) {
 
                 auto init_dims = init.grid_dimension(m_grid_name);
                 int init_nactive = init.activeCells(m_grid_name);
@@ -282,24 +286,26 @@ namespace EclIO
                 }
 
                 transnnc_array = trans_data;
-
-                if ((nncg_array_index > -1) && (nncl_array_index > -1)) {
-
-                    nncg_array = getImpl(nncg_array_index, Opm::EclIO::INTE, inte_array, "inte");
-                    nncl_array = getImpl(nncl_array_index, Opm::EclIO::INTE, inte_array, "inte");
-
-                    auto trangl_data = init.getInitData<float>("TRANGL", m_grid_name);
-                    if (trangl_data.size() != nncg_array.size()) {
-                        std::string message = "inconsistent size of array TRANGL in init file. ";
-                        message = message + " Size of NNCG and NNCL: " + std::to_string(nncl_array.size());
-                        message = message + " Size of TRANGL: " + std::to_string(trangl_data.size());
-                        OPM_THROW(std::invalid_argument, message);
-                    }
-
-                    transgl_array = trangl_data;
-                }
             }
 
+            m_nncs_loaded = true;
+        }
+        if ((nncg_array_index > -1) && (nncl_array_index > -1)) {
+
+            nncg_array = getImpl(nncg_array_index, Opm::EclIO::INTE, inte_array, "inte");
+            nncl_array = getImpl(nncl_array_index, Opm::EclIO::INTE, inte_array, "inte");
+
+            if (nncg_array.size() > 0) {
+                auto trangl_data = init.getInitData<float>("TRANGL", m_grid_name);
+                if (trangl_data.size() != nncg_array.size()) {
+                    std::string message = "inconsistent size of array TRANGL in init file. ";
+                    message = message + " Size of NNCG and NNCL: " + std::to_string(nncl_array.size());
+                    message = message + " Size of TRANGL: " + std::to_string(trangl_data.size());
+                    OPM_THROW(std::invalid_argument, message);
+                }
+
+                transgl_array = trangl_data;
+            }
             m_nncs_loaded = true;
         }
     }
@@ -307,6 +313,9 @@ namespace EclIO
     std::vector<ENNCConnection> EGrid::nnc_connections(int this_grid_id)
     {
         std::vector<ENNCConnection> connections;
+
+        if (!m_nncs_loaded)
+            load_nnc_data();
 
         for (int n = 0; n < (int)nnc1_array.size(); n++) {
             connections.emplace_back(this_grid_id, nnc1_array[n], this_grid_id, nnc2_array[n], transnnc_array[n]);
