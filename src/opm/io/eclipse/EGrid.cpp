@@ -95,6 +95,11 @@ namespace EclIO
                     lgrname = lgr_names[nnchead[1] - 1];
             }
 
+            if (array_name[n] == "GRIDUNIT") {
+                auto gridunit = this->get<std::string>(n);
+                m_grid_unit = gridunit[0];
+            }
+
             if (array_name[n] == "MAPUNITS") {
                 auto mapunits = this->get<std::string>(n);
                 m_mapunits = mapunits[0];

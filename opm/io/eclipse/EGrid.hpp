@@ -113,6 +113,11 @@ namespace EclIO
             return m_porosity_mode;
         }
 
+        std::string grid_unit() const
+        {
+            return m_grid_unit;
+        }
+
         const std::vector<int>& hostCellsGlobalIndex() const
         {
             return host_cells;
@@ -162,6 +167,7 @@ namespace EclIO
         mutable bool m_nncs_loaded;
 
         int m_porosity_mode;
+        std::string m_grid_unit;
 
         std::vector<int> act_index;
         std::vector<int> act_frac_index;
