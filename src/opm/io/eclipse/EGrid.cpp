@@ -154,33 +154,7 @@ namespace EclIO
 
         if (actnum_array_index != -1) {
             auto actnum = this->get<int>(actnum_array_index);
-            nactive = 0;
-            nactive_frac = 0;
-            int nglobsize = 0;
-            for (size_t i = 0; i < actnum.size(); i++) {
-                const int an = actnum[i];
-                if (an > 0) {
-                    if (an == 1) {
-                        act_index.push_back(nglobsize);
-                        act_frac_index.push_back(-1);
-                        nactive++;
-                    } else if (an == 2) {
-                        act_index.push_back(-1);
-                        act_frac_index.push_back(nglobsize);
-                        nactive_frac++;
-                    } else if (an == 3) {
-                        act_index.push_back(nglobsize);
-                        nactive++;
-                        act_frac_index.push_back(nglobsize);
-                        nactive_frac++;
-                    }
-                    glob_index.push_back(i);
-                    nglobsize++;
-                } else {
-                    act_index.push_back(-1);
-                    act_frac_index.push_back(-1);
-                }
-            }
+            set_active_cells(actnum);
         } else {
             int nCells = nijk[0] * nijk[1] * nijk[2];
             act_index.resize(nCells);
@@ -199,6 +173,41 @@ namespace EclIO
                 host_cells.push_back(val - 1);
         }
     }
+
+    void EGrid::set_active_cells(const std::vector<int>& active_cell_info)
+    {
+        act_index.clear();
+        act_frac_index.clear();
+        glob_index.clear();
+        nactive = 0;
+        nactive_frac = 0;
+        int nglobsize = 0;
+        for (size_t i = 0; i < active_cell_info.size(); i++) {
+            const int an = active_cell_info[i];
+            if (an > 0) {
+                if (an == 1) {
+                    act_index.push_back(nglobsize);
+                    act_frac_index.push_back(-1);
+                    nactive++;
+                } else if (an == 2) {
+                    act_index.push_back(-1);
+                    act_frac_index.push_back(nglobsize);
+                    nactive_frac++;
+                } else if (an == 3) {
+                    act_index.push_back(nglobsize);
+                    nactive++;
+                    act_frac_index.push_back(nglobsize);
+                    nactive_frac++;
+                }
+                glob_index.push_back(i);
+                nglobsize++;
+            } else {
+                act_index.push_back(-1);
+                act_frac_index.push_back(-1);
+            }
+        }
+    }
+
 
     std::vector<std::array<int, 3>> EGrid::hostCellsIJK()
     {
@@ -262,7 +271,6 @@ namespace EclIO
             if (nnc1_array.size() > 0) {
 
                 auto init_dims = init.grid_dimension(m_grid_name);
-                int init_nactive = init.activeCells(m_grid_name);
 
                 if (init_dims != nijk) {
                     std::string message = "Dimensions of Egrid differ from dimensions found in init file. ";
@@ -274,20 +282,22 @@ namespace EclIO
                     OPM_THROW(std::invalid_argument, message);
                 }
 
-                if (init_nactive != nactive) {
-                    std::string message = "Number of active cells are different in Egrid and Init file.";
-                    message = message + " Egrid: " + std::to_string(nactive)
-                        + ". INIT file: " + std::to_string(init_nactive);
-                    OPM_THROW(std::invalid_argument, message);
-                }
-
                 auto trans_data = init.getInitData<float>("TRANNNC", m_grid_name);
 
                 if (trans_data.size() != nnc1_array.size()) {
-                    std::string message = "inconsistent size of array TRANNNC in init file. ";
-                    message = message + " Size of NNC1 and NNC2: " + std::to_string(nnc1_array.size());
-                    message = message + " Size of TRANNNC: " + std::to_string(trans_data.size());
-                    OPM_THROW(std::invalid_argument, message);
+
+                    auto no_nnc_header = init.number_of_nnc_in_header();
+                    if (no_nnc_header != (int)trans_data.size()) {
+                        std::string message = "inconsistent size of array TRANNNC in init file. ";
+                        message = message + " Size of NNC1 and NNC2: " + std::to_string(nnc1_array.size());
+                        message = message + " Size of TRANNNC: " + std::to_string(trans_data.size());
+                        message = message + " Size in header: " + std::to_string(init.number_of_nnc_in_header());
+                        OPM_THROW(std::invalid_argument, message);
+                    } else {
+                        // TODO - solve this
+                        nnc1_array.resize(no_nnc_header, -1);
+                        nnc2_array.resize(no_nnc_header, -1);
+                    }
                 }
 
                 transnnc_array = trans_data;

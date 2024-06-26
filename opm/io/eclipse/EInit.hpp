@@ -3,9 +3,8 @@
 
    This file is part of the Open Porous Media project (OPM).
 
-   OPM is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by
-   the Free Software Foundation, either version 3 of the License, or
-   (at your option) any later version.
+   OPM is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as
+   published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
    OPM is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -22,56 +21,67 @@
 #include <opm/io/eclipse/EclFile.hpp>
 
 #include <array>
-#include <vector>
 #include <map>
+#include <vector>
 
-namespace Opm {
-    namespace EclIO {
+namespace Opm
+{
+namespace EclIO
+{
 
-        class EInit : public EclFile
+    class EInit : public EclFile
+    {
+    public:
+        explicit EInit(const std::string& filename);
+
+        const std::vector<std::string>& list_of_lgrs() const
         {
-        public:
-            explicit EInit(const std::string& filename);
+            return lgr_names;
+        }
 
-            const std::vector<std::string>& list_of_lgrs() const { return lgr_names; }
+        std::vector<EclFile::EclEntry> list_arrays() const;
+        std::vector<EclFile::EclEntry> list_arrays(const std::string& grid_name) const;
 
-            std::vector<EclFile::EclEntry> list_arrays() const;
-            std::vector<EclFile::EclEntry> list_arrays(const std::string& grid_name) const;
+        const std::array<int, 3>& grid_dimension(const std::string& grid_name = "global") const;
+        int activeCells(const std::string& grid_name = "global") const;
 
-            const std::array<int, 3>& grid_dimension(const std::string& grid_name = "global") const;
-            int activeCells(const std::string& grid_name = "global") const;
+        bool hasLGR(const std::string& name) const;
 
-            bool hasLGR(const std::string& name) const;
+        template <typename T>
+        const std::vector<T>& getInitData(const std::string& name, const std::string& grid_name = "global")
+        {
+            return this->ImplgetInitData<T>(name, grid_name);
+        }
 
-            template <typename T>
-            const std::vector<T>& getInitData(const std::string& name, const std::string& grid_name = "global")
-            {
-                return this->ImplgetInitData<T>(name, grid_name);
-            }
+        const int number_of_nnc_in_header()
+        {
+            return no_of_nnc;
+        }
 
-        protected:
+    protected:
+        template <typename T>
+        const std::vector<T>& ImplgetInitData(const std::string& name, const std::string& grid_name = "global");
 
-            template <typename T>
-            const std::vector<T>& ImplgetInitData(const std::string& name, const std::string& grid_name = "global");
+    private:
+        std::array<int, 3> global_nijk;
+        std::vector<std::array<int, 3>> lgr_nijk;
 
-        private:
-            std::array<int, 3> global_nijk;
-            std::vector<std::array<int, 3>> lgr_nijk;
+        int global_nactive;
+        std::vector<int> lgr_nactive;
+        bool dual_porosity;
 
-            int global_nactive;
-            std::vector<int> lgr_nactive;
-            bool dual_porosity;
+        int no_of_nnc;
 
-            std::vector<std::string> lgr_names;
+        std::vector<std::string> lgr_names;
 
-            std::map<std::string, int> global_array_index;
-            std::vector<std::map<std::string, int>> lgr_array_index;
+        std::map<std::string, int> global_array_index;
+        std::vector<std::map<std::string, int>> lgr_array_index;
 
-            int get_array_index(const std::string& name, const std::string& grid_name) const;
-            int get_lgr_index(const std::string& grid_name) const;
-        };
+        int get_array_index(const std::string& name, const std::string& grid_name) const;
+        int get_lgr_index(const std::string& grid_name) const;
+    };
 
-    }
-} // namespace Opm::EclIO
+} // namespace EclIO
+} // namespace Opm
 
 #endif // OPM_IO_EINIT_HPP

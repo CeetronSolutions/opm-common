@@ -149,6 +149,8 @@ namespace EclIO
 
         std::vector<ENNCConnection> nnc_connections(int this_grid_id);
 
+        void set_active_cells(const std::vector<int>& active_cell_info);
+
 
     private:
         std::filesystem::path inputFileName, initFileName;
