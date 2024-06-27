@@ -286,17 +286,16 @@ namespace EclIO
 
                 if (trans_data.size() != nnc1_array.size()) {
 
-                    auto no_nnc_header = init.number_of_nnc_in_header();
-                    if (no_nnc_header != (int)trans_data.size()) {
+                    auto number_nnc_header = init.number_of_nnc_in_header();
+                    if (number_nnc_header != (int)trans_data.size()) {
                         std::string message = "inconsistent size of array TRANNNC in init file. ";
-                        message = message + " Size of NNC1 and NNC2: " + std::to_string(nnc1_array.size());
-                        message = message + " Size of TRANNNC: " + std::to_string(trans_data.size());
-                        message = message + " Size in header: " + std::to_string(init.number_of_nnc_in_header());
+                        message = message + " Size of NNC1 and NNC2 in grid: " + std::to_string(nnc1_array.size());
+                        message = message + " Size of TRANNNC in init: " + std::to_string(trans_data.size());
+                        message = message + " Size in init header: " + std::to_string(number_nnc_header);
                         OPM_THROW(std::invalid_argument, message);
                     } else {
-                        // TODO - solve this
-                        nnc1_array.resize(no_nnc_header, -1);
-                        nnc2_array.resize(no_nnc_header, -1);
+                        nnc1_array = init.getInitData<int>("NNC1");
+                        nnc2_array = init.getInitData<int>("NNC2");
                     }
                 }
 
