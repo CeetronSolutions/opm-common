@@ -151,6 +151,14 @@ namespace EclIO
 
         void set_active_cells(const std::vector<int>& active_cell_info);
 
+        const std::vector<int>& active_indexes() const
+        {
+            return act_index;
+        };
+        const std::vector<int>& active_frac_indexes() const
+        {
+            return act_frac_index;
+        };
 
     private:
         std::filesystem::path inputFileName, initFileName;

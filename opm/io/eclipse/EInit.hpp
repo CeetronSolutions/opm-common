@@ -53,7 +53,7 @@ namespace EclIO
             return this->ImplgetInitData<T>(name, grid_name);
         }
 
-        const int number_of_nnc_in_header()
+        int number_of_nnc_in_header() const
         {
             return no_of_nnc;
         }
