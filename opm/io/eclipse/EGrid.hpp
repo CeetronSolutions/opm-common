@@ -85,11 +85,19 @@ namespace EclIO
         std::vector<std::array<float, 3>> getXYZ_layer(int layer, bool bottom = false);
         std::vector<std::array<float, 3>> getXYZ_layer(int layer, const std::array<int, 4>& box, bool bottom = false);
 
+        // number of active cells that are either frac or matrix or both
+        int totalActiveCells() const
+        {
+            return (int)glob_index.size();
+        }
+
+        // number of active matrix cells
         int activeCells() const
         {
             return nactive;
         }
 
+        // number of active fracture cells
         int activeFracCells() const
         {
             return nactive_frac;
