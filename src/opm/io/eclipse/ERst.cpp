@@ -60,9 +60,11 @@ namespace EclIO
     {
         if (this->hasKey("SEQNUM")) {
             this->initUnified();
-        } else {
-            this->initSeparate(seqnumFromSeparateFilename(filename));
         }
+        // only support for unified restart files
+        //        } else {
+        //            this->initSeparate(seqnumFromSeparateFilename(filename));
+        //        }
     }
 
 
