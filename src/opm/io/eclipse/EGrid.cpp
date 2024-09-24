@@ -479,11 +479,21 @@ namespace EclIO
                 yb = coord_array[pind[n] + 4];
             }
 
-            X[n] = xt + (xb - xt) / (zt - zb) * (zt - Z[n]);
-            X[n + 4] = xt + (xb - xt) / (zt - zb) * (zt - Z[n + 4]);
+            const auto diffZ = zt - zb;
 
-            Y[n] = yt + (yb - yt) / (zt - zb) * (zt - Z[n]);
-            Y[n + 4] = yt + (yb - yt) / (zt - zb) * (zt - Z[n + 4]);
+            if (diffZ == 0.0) {
+                X[n] = xt;
+                X[n + 4] = xt;
+                Y[n] = yt;
+                Y[n + 4] = yt;
+
+            } else {
+                X[n] = xt + (xb - xt) / diffZ * (zt - Z[n]);
+                X[n + 4] = xt + (xb - xt) / diffZ * (zt - Z[n + 4]);
+
+                Y[n] = yt + (yb - yt) / diffZ * (zt - Z[n]);
+                Y[n + 4] = yt + (yb - yt) / diffZ * (zt - Z[n + 4]);
+            }
         }
     }
 
