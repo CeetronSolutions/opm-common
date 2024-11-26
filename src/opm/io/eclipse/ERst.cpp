@@ -42,10 +42,7 @@ seqnumFromSeparateFilename(const std::string& filename)
         return std::stoi(match[1]);
     }
 
-    throw std::invalid_argument {
-        "Unable to Determine Report Step Sequence Number "
-        "From Restart Filename \""
-        + filename + '"'};
+    return 0;
 }
 } // namespace
 
@@ -60,11 +57,9 @@ namespace EclIO
     {
         if (this->hasKey("SEQNUM")) {
             this->initUnified();
+        } else {
+            this->initSeparate(seqnumFromSeparateFilename(filename));
         }
-        // only support for unified restart files
-        //        } else {
-        //            this->initSeparate(seqnumFromSeparateFilename(filename));
-        //        }
     }
 
 
