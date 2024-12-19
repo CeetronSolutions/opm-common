@@ -228,7 +228,9 @@ Opm::EclIO::SummaryNode::category_from_keyword(const std::string& keyword)
     case 'G': return distinguish_group_from_node(keyword);
     case 'R': return Category::Region;
     case 'S': return Category::Segment;
-    case 'W': return distinguish_well_from_completion(keyword);
+    case 'W': return Category::Well;
+    case 'N': return Category::Node;
+
     default:  return Category::Miscellaneous;
     }
 }

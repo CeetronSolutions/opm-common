@@ -708,7 +708,10 @@ std::optional<std::filesystem::path> ParserState::getIncludeFilePath( std::strin
         std::string stringStartingAtPathName = path.substr(positionOfPathName+1);
         size_t cutOffPosition = stringStartingAtPathName.find_first_not_of(validPathNameCharacters);
         std::string stringToFind = stringStartingAtPathName.substr(0, cutOffPosition);
-        std::string stringToReplace = this->pathMap.at( stringToFind );
+
+        std::string stringToReplace = stringToFind;
+        if (this->pathMap.count(stringToFind))
+            stringToReplace = this->pathMap.at( stringToFind );
         replaceAll(path, pathKeywordPrefix + stringToFind, stringToReplace);
     }
 
