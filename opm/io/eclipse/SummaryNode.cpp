@@ -207,7 +207,20 @@ bool Opm::EclIO::SummaryNode::is_user_defined() const {
 */
 bool Opm::EclIO::SummaryNode::miscellaneous_exception(const std::string& keyword)
 {
-    static const std::unordered_set<std::string> miscellaneous_keywords = {"SEPARATE", "STEPTYPE", "SUMTHIN"};
+    static const std::unordered_set<std::string> miscellaneous_keywords = []() {
+        std::unordered_set<std::string> combined;
+        combined.insert({"SEPARATE", "STEPTYPE", "SUMTHIN"});
+
+        // The following names are taken from
+        // https://github.com/OPM/ResInsight/blob/dev/ApplicationLibCode/Application/Resources/keyword-description/keywords_eclipse.json
+        combined.insert({"CPU",      "DATE",     "DAY",      "ELAPSED",  "MLINEARS", "MONTH",    "MSUMLINS", "MSUMNEWT",
+                         "NBAKFL",   "NBYTOT",   "NCPRLINS", "NEWTFL",   "NEWTON",   "NLINEARP", "NLINEARS", "NLINSMAX",
+                         "NLINSMIN", "NLRESMAX", "NLRESSUM", "NMESSAGE", "NNUMFL",   "NNUMST",   "NTS",      "NTSECL",
+                         "NTSMCL",   "NTSPCL",   "STEPTYPE", "TCPU",     "TCPUDAY",  "TCPUTS",   "TELAPLIN", "TIME",
+                         "TIMESTEP", "TIMESTRY", "YEAR",     "YEARS"});
+        return combined;
+    }();
+
     return miscellaneous_keywords.count(keyword) == 1;
 }
 
@@ -229,6 +242,8 @@ Opm::EclIO::SummaryNode::category_from_keyword(const std::string& keyword)
     case 'R': return Category::Region;
     case 'S': return Category::Segment;
     case 'W': return distinguish_well_from_completion(keyword);
+    case 'N': return Category::Node;
+
     default:  return Category::Miscellaneous;
     }
 }

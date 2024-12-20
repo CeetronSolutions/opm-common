@@ -1239,6 +1239,14 @@ std::string ESmry::makeKeyString(const std::string& keywordArg, const std::strin
         return fmt::format("{}:{}", keywordArg, wgname);
     }
 
+    if (first == 'N') {
+        if (wgname == no_wgname) {
+            return "";
+        }
+
+        return fmt::format("{}:{}", keywordArg, wgname);
+    }
+
     if (first == 'L') {
 
         if (!lgr.has_value())

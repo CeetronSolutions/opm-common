@@ -187,4 +187,28 @@ BOOST_AUTO_TEST_CASE(Completion)
     }
 }
 
+BOOST_AUTO_TEST_CASE(Node)
+{
+    const auto node_kw = std::vector<std::string> {
+        "NWGOR", "NJWPR", "NCPUNSL"
+    };
+
+    for (const auto& kw : node_kw) {
+        BOOST_CHECK_MESSAGE(category(kw) == Opm::EclIO::SummaryNode::Category::Node,
+                            "Keyword '" << kw << "' must be category 'Node'. Got '" <<
+                            to_string(category(kw)) << "' instead");
+    }
+
+    const auto misc_kw = std::vector<std::string> {
+        "NEWTON", "YEAR", "TCPU"
+    };
+
+    for (const auto& kw : misc_kw) {
+        BOOST_CHECK_MESSAGE(category(kw) == Opm::EclIO::SummaryNode::Category::Miscellaneous,
+                            "Keyword '" << kw << "' must be category 'Miscellaneous'. Got '" <<
+                            to_string(category(kw)) << "' instead");
+    }
+}
+
+
 BOOST_AUTO_TEST_SUITE_END() // Category
