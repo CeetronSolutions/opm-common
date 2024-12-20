@@ -708,7 +708,10 @@ std::optional<std::filesystem::path> ParserState::getIncludeFilePath( std::strin
         std::string stringStartingAtPathName = path.substr(positionOfPathName+1);
         size_t cutOffPosition = stringStartingAtPathName.find_first_not_of(validPathNameCharacters);
         std::string stringToFind = stringStartingAtPathName.substr(0, cutOffPosition);
-        std::string stringToReplace = this->pathMap.at( stringToFind );
+
+        std::string stringToReplace = stringToFind;
+        if (this->pathMap.count(stringToFind))
+            stringToReplace = this->pathMap.at( stringToFind );
         replaceAll(path, pathKeywordPrefix + stringToFind, stringToReplace);
     }
 
@@ -1405,7 +1408,7 @@ bool parseState( ParserState& parserState, const Parser& parser ) {
             if (includeFile.has_value()) {
                 auto& deck_tree = parserState.deck.tree();
                 deck_tree.add_include(std::filesystem::absolute(parserState.current_path()).generic_string(),
-                                      includeFile.value());
+                                      includeFile.value().generic_string());
                 parserState.loadFile(includeFile.value());
             }
             continue;

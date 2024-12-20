@@ -633,6 +633,9 @@ RstState RstState::load(std::shared_ptr<EclIO::RestartFileView> rstView,
 
     // At minimum we need any applicable constraint data for FIELD.  Load
     // groups unconditionally.
+
+    if (rstView->hasKeyword<std::string>("ZGRP") && rstView->hasKeyword<int>("IGRP")
+            && rstView->hasKeyword<float>("SGRP") && rstView->hasKeyword<double>("XGRP"))
     {
         const auto& zgrp = rstView->getKeyword<std::string>("ZGRP");
         const auto& igrp = rstView->getKeyword<int>("IGRP");

@@ -634,6 +634,9 @@ ESmry::ESmry(const std::string &filename, bool loadBaseRunData) :
 
 void ESmry::read_ministeps_from_disk()
 {
+    if (miniStepList.empty())
+        return;
+
     auto specInd = std::get<0>(miniStepList[0]);
     auto dataFileIndex = std::get<1>(miniStepList[0]);
 
@@ -841,6 +844,9 @@ std::vector<int> ESmry::makeKeywPosVector(int specInd) const
 
 void ESmry::loadData() const
 {
+    if (timeStepList.empty())
+        return;
+
     std::fstream fileH;
 
     auto specInd = std::get<0>(timeStepList[0]);
@@ -1239,6 +1245,14 @@ std::string ESmry::makeKeyString(const std::string& keywordArg, const std::strin
         return fmt::format("{}:{}", keywordArg, wgname);
     }
 
+    if (first == 'N') {
+        if (wgname == no_wgname) {
+            return "";
+        }
+
+        return fmt::format("{}:{}", keywordArg, wgname);
+    }
+
     if (first == 'L') {
 
         if (!lgr.has_value())
@@ -1443,5 +1457,16 @@ std::tuple<double, double> ESmry::get_io_elapsed() const
     return duration;
 }
 
+size_t ESmry::getSmspecIndexForKeyword(const std::string& keyword) const
+{
+    if (!keywordListSpecFile.empty())
+    {
+        std::vector<std::string> keywordForFirstSmspecFile = keywordListSpecFile.front();
+        auto it = std::find(keywordForFirstSmspecFile.begin(), keywordForFirstSmspecFile.end(), keyword);
+        if (it != keywordForFirstSmspecFile.end()) return std::distance(keywordForFirstSmspecFile.begin(), it);
+    }
+	
+    return std::numeric_limits<size_t>::max();
+}
 
 }} // namespace Opm::EclIO
