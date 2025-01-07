@@ -77,3 +77,4 @@ install
 *.pyc
 *.eggs
 *.egg-info
+/.vs
