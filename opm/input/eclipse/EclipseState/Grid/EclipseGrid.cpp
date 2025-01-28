@@ -23,7 +23,6 @@
 #include <optional>
 #include <stdexcept>
 #include <vector>
-#define _USE_MATH_DEFINES
 
 #include <opm/input/eclipse/EclipseState/Grid/EclipseGrid.hpp>
 #include <opm/input/eclipse/EclipseState/Grid/LgrCollection.hpp>
