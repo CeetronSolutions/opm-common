@@ -1319,6 +1319,11 @@ std::string ESmry::makeKeyString(const std::string& keywordArg, const std::strin
         return fmt::format("{}:{}", keywordArg, wgname);
     }
 
+    // Support for N type keywords for NETWORK. Treat the wgname as network name.
+    if (first == 'N' && !wgname.empty()) {
+        return fmt::format("{}:{}", keywordArg, wgname);
+    }
+
     return keywordArg;
 }
 
