@@ -101,6 +101,12 @@ FileDeck::Index& FileDeck::Index::operator--()
         }
 
         --this->file_index;
+        while (this->deck->blocks[this->file_index].size() == 0) {
+            if (this->file_index == 0) {
+                throw std::logic_error("Going beyond start of container");
+            }
+            --this->file_index;
+        }
         this->keyword_index = this->deck->blocks[this->file_index].size() - 1;
     }
 
