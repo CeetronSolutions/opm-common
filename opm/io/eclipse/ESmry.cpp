@@ -736,6 +736,9 @@ void ESmry::loadData(const std::vector<std::string>& vectList) const
     for (auto ind : keywIndVect)
         vectorData[ind].reserve(nTstep);
 
+    if (timeStepList.empty())
+        return;
+
     std::fstream fileH;
 
     auto specInd = std::get<0>(timeStepList[0]);
@@ -753,6 +756,9 @@ void ESmry::loadData(const std::vector<std::string>& vectList) const
     else
         fileH.open(dataFileList[dataFileIndex], std::ios::in |  std::ios::binary);
 
+    if (!fileH.is_open())
+        return;
+
     for (const auto& ministep : timeStepList) {
         if (dataFileIndex != std::get<1>(ministep)) {
             fileH.close();
@@ -763,6 +769,9 @@ void ESmry::loadData(const std::vector<std::string>& vectList) const
                 fileH.open(dataFileList[dataFileIndex], std::ios::in );
             else
                 fileH.open(dataFileList[dataFileIndex], std::ios::in |  std::ios::binary);
+
+            if (!fileH.is_open())
+                return;
         }
 
         const auto stepFilePos = std::get<2>(ministep);;
