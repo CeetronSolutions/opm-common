@@ -980,6 +980,9 @@ ESmry::getListOfArrays(const std::string& filename, bool formatted)
     else
         ptr = fopen(filename.c_str(),"rb");  // r for read, b for binary
 
+    if (ptr == nullptr)
+        throw std::runtime_error("could not open summary data file " + filename);
+
     bool endOfFile = false;
 
     while (!endOfFile)
