@@ -33,6 +33,7 @@ namespace Opm {
             size_t      columns = 7;          // The maximum number of columns on a record.
             std::string record_indent = " "; // The indentation when starting a new line.
             std::string keyword_sep = "";  // The separation between keywords;
+            size_t      max_line_width = 132; // Maximum line width in characters (Eclipse 100 limit). 0 means unlimited.
         };
 
         explicit DeckOutput(std::ostream& s, int precision = 10);
@@ -53,13 +54,15 @@ namespace Opm {
         std::ostream& os;
         size_t default_count;
         size_t row_count;
+        size_t current_width;
         bool record_on;
         int org_precision;
         bool split_line;
 
-        template <typename T> void write_value(const T& value);
+        template <typename T> std::string format_value(const T& value);
+        void write_token(const std::string& token);
         void split_record();
-        void write_sep( );
+        void write_sep(size_t next_token_width);
         void set_precision(int precision);
     };
 }
